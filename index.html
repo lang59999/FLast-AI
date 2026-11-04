@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flast — твой ИИ-компаньон · flastai.com</title>
+    <meta name="description" content="Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@400;500;600;800&family=Geist+Mono:wght@400&family=Space+Mono:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="hark.css" />
+    <link rel="stylesheet" href="hark-hero.css" />
+    <style>
+      :root { --x-bg: #0c0c0d; --x-ink: #f5f5f4; --x-dim: #9b9b9f; --x-line: rgba(255,255,255,.12); --x-card: #141416; --x-display: "Anton", "Archivo Black", "Arial Black", Impact, sans-serif; --x-mono: "Space Mono", "Geist Mono", ui-monospace, monospace; }
+      html, body { background: var(--x-bg); color: var(--x-ink); color-scheme: dark; }
+      body { font-family: "Geist", system-ui, sans-serif; }
+      .x-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; background-color: var(--x-bg);
+        background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+        background-size: 48px 48px; }
+      .x-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, transparent 0%, var(--x-bg) 75%); }
+      .x-wrap { display: grid; gap: clamp(72px, 12vw, 140px); padding-block: 8px 24px; }
+
+      .x-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 8px; }
+      .x-logo { display: inline-flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; min-height: var(--tap); }
+      .x-tile { width: 44px; height: 44px; border-radius: 12px; background: #1b1b1e; border: 1px solid var(--x-line); display: grid; place-items: center; flex: none; }
+      .x-tile i { display: block; width: 18px; height: 5px; border-radius: 3px; background: #fff; }
+      .x-word { display: grid; line-height: 1.05; }
+      .x-word b { font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+      .x-word small { font-size: 12px; color: var(--x-dim); }
+      .x-toplink { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); text-decoration: none; letter-spacing: .06em; text-transform: uppercase; min-height: var(--tap); display: inline-flex; align-items: center; }
+      .x-toplink:hover { color: var(--x-ink); }
+
+      .x-hero { display: grid; gap: 28px; justify-items: start; padding-top: clamp(24px, 8vw, 80px); }
+      .x-live { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,.35); border-radius: var(--r-pill); padding: 6px 14px; font-family: var(--x-mono); font-size: 12px; letter-spacing: .14em; }
+      .x-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--fill-system-green, #34c759); box-shadow: 0 0 0 4px rgba(52,199,89,.18); }
+      .x-h1, .x-h2, .x-big { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; letter-spacing: .005em; margin: 0; }
+      .x-h1 { font-size: clamp(52px, 13vw, 150px); }
+      .x-h1 span { display: block; }
+      .x-key { display: inline-block; background: #fff; color: var(--x-bg); border-radius: .22em; padding: .02em .2em .04em; margin-top: .06em; }
+      .x-lead { font-size: clamp(17px, 2.4vw, 21px); line-height: 1.5; color: #cfcfd2; max-width: 34em; margin: 0; }
+      .x-btn { display: inline-flex; align-items: center; gap: 12px; background: #fff; color: var(--x-bg); border-radius: var(--r-pill); padding: 18px 34px; min-height: 60px; font-weight: 800; font-size: 16px; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; transition: transform var(--dur-quick, .15s) var(--ease-out, ease), box-shadow var(--dur-quick, .15s); }
+      .x-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(255,255,255,.18); }
+      .x-btn:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+      .x-mono { font-family: var(--x-mono); font-size: 13px; color: var(--x-dim); letter-spacing: .08em; margin: 0; }
+
+      .x-sec { display: grid; gap: 32px; scroll-margin-top: 24px; }
+      .x-eyebrow { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .14em; text-transform: uppercase; margin: 0 0 12px; }
+      .x-h2 { font-size: clamp(38px, 7vw, 76px); }
+      .x-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+      .x-card { background: var(--x-card); border: 1px solid var(--x-line); border-radius: var(--r-l); padding: 28px; display: grid; gap: 12px; align-content: start; transition: border-color var(--dur-quick, .15s); }
+      .x-card:hover { border-color: rgba(255,255,255,.3); }
+      .x-card h3 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+      .x-card p { margin: 0; color: #bdbdc1; font-size: 16px; line-height: 1.55; }
+      .x-ico { width: 44px; height: 44px; border-radius: 12px; background: #fff; color: var(--x-bg); display: grid; place-items: center; font-family: var(--x-mono); font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+      .x-model .x-spec { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .08em; text-transform: uppercase; }
+      .x-model ul { list-style: none; margin: 8px 0 0; padding: 16px 0 0; border-top: 1px solid var(--x-line); display: grid; gap: 8px; }
+      .x-model li { display: flex; gap: 10px; color: #d6d6d9; font-size: 15px; line-height: 1.45; }
+      .x-model li::before { content: ""; flex: none; width: 10px; height: 3px; border-radius: 2px; background: #fff; margin-top: .62em; }
+
+      .x-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+      .x-steps li { border-top: 1px solid rgba(255,255,255,.35); padding-top: 20px; display: grid; gap: 12px; }
+      .x-num { font-family: var(--x-display); font-size: clamp(72px, 12vw, 120px); line-height: .9; color: transparent; -webkit-text-stroke: 1.5px #fff; }
+      .x-steps p { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.35; }
+
+      .x-check { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--x-line); }
+      .x-check li { display: flex; align-items: center; gap: 16px; padding: 18px 4px; border-bottom: 1px solid var(--x-line); font-size: 18px; }
+      .x-check li::before { content: "✓"; flex: none; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--x-bg); display: grid; place-items: center; font-weight: 800; font-size: 14px; }
+      .x-check li::first-letter { text-transform: uppercase; }
+
+      .x-cta { border: 1px solid var(--x-line); border-radius: var(--r-xl); padding: clamp(40px, 8vw, 88px) clamp(24px, 6vw, 64px); display: grid; gap: 32px; justify-items: center; text-align: center;
+        background: radial-gradient(ellipse at 50% 120%, rgba(255,255,255,.12), transparent 60%), var(--x-card); }
+      .x-big { font-size: clamp(54px, 12vw, 140px); }
+
+      .x-foot { border-top: 1px solid var(--x-line); padding-top: 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+      .x-foot a.x-mail { font-family: var(--x-mono); font-size: 14px; color: var(--x-ink); text-decoration: none; letter-spacing: .08em; min-height: var(--tap); display: inline-flex; align-items: center; }
+      .x-foot a.x-mail:hover { text-decoration: underline; }
+      .x-foot p { margin: 0; color: var(--x-dim); font-size: 13px; }
+      button.x-btn { border: 0; cursor: pointer; font-family: inherit; }
+
+      /* Application modal */
+      .x-modal { width: min(100% - 2 * var(--gutter), 520px); max-width: none; max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--x-line); border-radius: var(--r-xl); background: var(--x-card); color: var(--x-ink); overflow: auto; overscroll-behavior: contain; }
+      .x-modal::backdrop { background: rgba(0,0,0,.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+      .x-modal__in { position: relative; display: grid; gap: 20px; padding: clamp(28px, 6vw, 44px); }
+      .x-modal h2 { font-family: var(--x-display); font-weight: 400; text-transform: uppercase; line-height: .95; font-size: clamp(34px, 8vw, 52px); margin: 0; padding-right: 48px; }
+      .x-modal p { margin: 0; color: #cfcfd2; font-size: 16px; line-height: 1.5; }
+      .x-close { position: absolute; top: 12px; right: 12px; width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--x-line); background: transparent; color: var(--x-ink); font-size: 26px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+      .x-close:hover { border-color: rgba(255,255,255,.4); }
+      .x-form { display: grid; gap: 16px; }
+      .x-field { display: grid; gap: 8px; }
+      .x-field span { font-family: var(--x-mono); font-size: 12px; color: var(--x-dim); letter-spacing: .1em; text-transform: uppercase; }
+      .x-field input, .x-field textarea { width: 100%; box-sizing: border-box; min-height: 56px; padding: 14px 18px; border-radius: var(--r-s); border: 1px solid var(--x-line); background: var(--x-bg); color: var(--x-ink); font: 16px/1.4 "Geist", system-ui, sans-serif; }
+      .x-field textarea { min-height: 104px; resize: vertical; }
+      .x-field input:focus, .x-field textarea:focus { outline: none; border-color: #fff; }
+      .x-field input[aria-invalid="true"] { border-color: var(--fill-system-red, #ff453a); }
+      .x-err { color: var(--fill-system-red, #ff6b60) !important; font-size: 14px !important; min-height: 0; }
+      .x-err:empty { display: none; }
+      .x-form .x-btn, .x-done .x-btn { justify-content: center; width: 100%; box-sizing: border-box; }
+      .x-done { display: grid; gap: 12px; }
+      .x-textbtn { min-height: 56px; background: none; border: 0; color: var(--x-dim); font: 500 15px "Geist", system-ui, sans-serif; letter-spacing: .04em; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+      .x-textbtn:hover { color: var(--x-ink); }
+      body.x-locked { overflow: hidden; }
+      .x-modal h2:focus { outline: none; }
+      .x-step-form[hidden], .x-step-done[hidden] { display: none; }
+
+      /* Phones */
+      html, body { overflow-x: clip; }
+      .x-wrap, .x-hero, .x-sec, .x-cta, .x-form, .x-done, .x-modal__in { grid-template-columns: minmax(0, 1fr); }
+      .x-hero > *, .x-cta > * { max-width: 100%; }
+      .x-modal { margin: auto; }
+      .x-modal__in { padding-bottom: max(clamp(28px, 6vw, 44px), env(safe-area-inset-bottom)); }
+      .x-h1, .x-big, .x-h2 { overflow-wrap: break-word; hyphens: manual; }
+      @media (max-width: 640px) {
+        .page { padding-inline: 20px; }
+        .x-wrap { gap: 72px; }
+        .x-top { padding-block: 4px; }
+        .x-logo, .x-toplink, .x-foot a.x-mail { min-height: 56px; }
+        .x-toplink { padding-inline: 8px; margin-right: -8px; font-size: 13px; }
+        .x-hero { gap: 22px; padding-top: 24px; }
+        .x-h1 { font-size: clamp(38px, 12vw, 64px); line-height: .98; }
+        .x-lead { font-size: 17px; }
+        .x-btn { width: 100%; justify-content: center; box-sizing: border-box; min-height: 56px; padding: 16px 24px; font-size: 16px; }
+        .x-mono { font-size: 13px; }
+        .x-sec { gap: 24px; }
+        .x-h2 { font-size: clamp(34px, 10vw, 52px); }
+        .x-grid, .x-steps, .x-check { grid-template-columns: 1fr; }
+        .x-card { padding: 24px 22px; }
+        .x-card h3 { font-size: 21px; }
+        .x-model li { font-size: 16px; }
+        .x-num { font-size: 72px; }
+        .x-steps p { font-size: 19px; }
+        .x-check li { font-size: 17px; padding: 16px 4px; min-height: 56px; box-sizing: border-box; }
+        .x-cta { padding: 44px 22px; gap: 24px; border-radius: var(--r-l); }
+        .x-big { font-size: clamp(44px, 13vw, 72px); }
+        .x-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+        .x-foot p { font-size: 14px; }
+        .x-modal { width: calc(100% - 24px); border-radius: var(--r-l); }
+        .x-modal__in { padding: 28px 20px 24px; }
+      }
+      @media (max-width: 360px) { .x-h1 { font-size: 36px; } .x-big { font-size: 42px; } .x-h2 { font-size: 32px; } .page { padding-inline: 16px; } }
+      @media (prefers-reduced-motion: reduce) { .x-btn, .x-card { transition: none; } .x-btn:hover { transform: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="x-bg" aria-hidden="true"></div>
+    <div class="page" id="top">
+      <div class="x-wrap">
+        <header class="x-top">
+          <a class="x-logo" href="#top" aria-label="Flast — на главную">
+            <span class="x-tile"><i></i></span>
+            <span class="x-word"><b>Flast</b><small>ИИ-компаньон</small></span>
+          </a>
+          <a class="x-toplink" href="#modeli">Нейросети →</a>
+        </header>
+
+        <main class="x-wrap">
+          <section class="x-hero" aria-labelledby="hero-title">
+            <span class="x-live">ОНЛАЙН</span>
+            <h1 class="x-h1" id="hero-title"><span>Твой ИИ-компаньон</span><span>уже <em class="x-key" style="font-style:normal">здесь</em></span></h1>
+            <p class="x-lead">Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя.</p>
+            <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
+            <p class="x-mono">[ flastai.com ]</p>
+          </section>
+
+          <section class="x-sec" id="umeet" aria-labelledby="umeet-title">
+            <div>
+              <p class="x-eyebrow">// 01 — возможности</p>
+              <h2 class="x-h2" id="umeet-title">Что умеет</h2>
+            </div>
+            <div class="x-grid">
+              <article class="x-card"><span class="x-ico" aria-hidden="true">01</span><h3>Умный диалог</h3><p>Отвечает на любые вопросы и помнит контекст беседы.</p></article>
+              <article class="x-card"><span class="x-ico" aria-hidden="true">02</span><h3>Текст и код</h3><p>Пишет статьи, письма и программный код на любом языке.</p></article>
+              <article class="x-card"><span class="x-ico" aria-hidden="true">03</span><h3>Перевод и пересказ</h3><p>Переводит между языками и сжимает длинные тексты до сути.</p></article>
+            </div>
+          </section>
+
+          <section class="x-sec" id="modeli" aria-labelledby="modeli-title">
+            <div>
+              <p class="x-eyebrow">// 02 — модели</p>
+              <h2 class="x-h2" id="modeli-title">Нейросети</h2>
+            </div>
+            <div class="x-grid">
+              <article class="x-card x-model"><span class="x-spec">Универсальный собеседник</span><h3>Flast Chat</h3>
+                <ul><li>Быстрые ответы</li><li>Память диалога</li><li>Русский и английский</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Генерация текстов</span><h3>Flast Writer</h3>
+                <ul><li>Статьи и посты</li><li>Письма и реклама</li><li>В нужном тоне</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Помощник программиста</span><h3>Flast Coder</h3>
+                <ul><li>Пишет код</li><li>Объясняет код</li><li>Находит ошибки</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Переводчик</span><h3>Flast Translate</h3>
+                <ul><li>Более 50 языков</li><li>Сохраняет смысл и стиль</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Пересказ</span><h3>Flast Summary</h3>
+                <ul><li>Сжимает длинные документы</li><li>Оставляет только главное</li></ul></article>
+              <article class="x-card x-model"><span class="x-spec">Генератор идей</span><h3>Flast Ideas</h3>
+                <ul><li>Мозговой штурм</li><li>Названия и сюжеты</li><li>Концепции</li></ul></article>
+            </div>
+          </section>
+
+          <section class="x-sec" id="kak" aria-labelledby="kak-title">
+            <div>
+              <p class="x-eyebrow">// 03 — три шага</p>
+              <h2 class="x-h2" id="kak-title">Как это работает</h2>
+            </div>
+            <ol class="x-steps">
+              <li><span class="x-num" aria-hidden="true">01</span><p>Выбери нейросеть под задачу.</p></li>
+              <li><span class="x-num" aria-hidden="true">02</span><p>Напиши запрос простыми словами.</p></li>
+              <li><span class="x-num" aria-hidden="true">03</span><p>Получи готовый результат за секунды.</p></li>
+            </ol>
+          </section>
+
+          <section class="x-sec" id="vozmozhnosti" aria-labelledby="voz-title">
+            <div>
+              <p class="x-eyebrow">// 04 — что можно сделать</p>
+              <h2 class="x-h2" id="voz-title">Возможности</h2>
+            </div>
+            <ul class="x-check">
+              <li>Написать статью или пост</li>
+              <li>Составить письмо или резюме</li>
+              <li>Перевести текст</li>
+              <li>Объяснить сложную тему простыми словами</li>
+              <li>Написать и исправить код</li>
+              <li>Придумать идеи и названия</li>
+              <li>Пересказать длинный документ</li>
+            </ul>
+          </section>
+
+          <section class="x-cta" aria-labelledby="cta-title">
+            <p class="x-mono">[ flastai.com ]</p>
+            <h2 class="x-big" id="cta-title">Попробуй Flast</h2>
+            <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
+          </section>
+        </main>
+
+        <footer class="x-foot">
+          <a class="x-logo" href="#top" aria-label="Flast — наверх">
+            <span class="x-tile"><i></i></span>
+            <span class="x-word"><b>Flast</b></span>
+          </a>
+          <a class="x-mail" href="mailto:hey@flastai.com">[ HEY@FLASTAI.COM ]</a>
+          <p>flastai.com · 2026</p>
+        </footer>
+      </div>
+    </div>
+
+    <dialog class="x-modal" id="apply" aria-labelledby="apply-title">
+      <div class="x-modal__in">
+        <button class="x-close" type="button" data-close aria-label="Закрыть">×</button>
+        <div class="x-step-form">
+          <div class="x-modal__in" style="padding:0">
+            <h2 id="apply-title">Заявка на доступ</h2>
+            <p>Оставь заявку — её одобрят, и откроется доступ к Flast.</p>
+            <form class="x-form" id="apply-form" novalidate>
+              <label class="x-field"><span>Имя</span><input type="text" name="name" required autocomplete="given-name" /></label>
+              <label class="x-field"><span>Твой @ник в Telegram</span><input type="text" name="tg" required autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="@" /></label>
+              <label class="x-field"><span>Комментарий</span><textarea name="comment" rows="3"></textarea></label>
+              <p class="x-err" id="apply-err" role="alert"></p>
+              <button class="x-btn" type="submit">Отправить <span aria-hidden="true">→</span></button>
+            </form>
+          </div>
+        </div>
+        <div class="x-step-done" hidden>
+          <div class="x-modal__in" style="padding:0">
+            <h2 id="done-title" tabindex="-1">Заявка отправлена ✓</h2>
+            <p>Открой Telegram и нажми СТАРТ, чтобы завершить. После одобрения доступ откроется.</p>
+            <div class="x-done">
+              <a class="x-btn" href="https://t.me/flast_aibot" target="_blank" rel="noopener">Открыть Telegram</a>
+              <button class="x-textbtn" type="button" data-close>Закрыть</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="hark.js"></script>
+    <script>
+      (function () {
+        var dlg = document.getElementById("apply");
+        var form = document.getElementById("apply-form");
+        var err = document.getElementById("apply-err");
+        var stepForm = dlg.querySelector(".x-step-form");
+        var stepDone = dlg.querySelector(".x-step-done");
+
+        function reset() {
+          stepForm.hidden = false; stepDone.hidden = true;
+          dlg.setAttribute("aria-labelledby", "apply-title");
+          err.textContent = "";
+          form.querySelectorAll("[aria-invalid]").forEach(function (el) { el.removeAttribute("aria-invalid"); });
+        }
+        function open() {
+          reset();
+          if (typeof dlg.showModal === "function") dlg.showModal(); else dlg.setAttribute("open", "");
+          document.body.classList.add("x-locked");
+        }
+        function close() {
+          if (typeof dlg.close === "function") dlg.close(); else dlg.removeAttribute("open");
+        }
+        dlg.addEventListener("close", function () { document.body.classList.remove("x-locked"); });
+
+        document.querySelectorAll("[data-apply]").forEach(function (b) {
+          b.addEventListener("click", function (e) { e.preventDefault(); open(); });
+        });
+        dlg.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", close); });
+        dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var missing = null;
+          ["name", "tg"].forEach(function (n) {
+            var f = form.elements[n];
+            var bad = !f.value.trim() || (n === "tg" && f.value.trim() === "@");
+            if (bad) { f.setAttribute("aria-invalid", "true"); if (!missing) missing = f; }
+            else f.removeAttribute("aria-invalid");
+          });
+          if (missing) { err.textContent = "Заполни имя и @ник в Telegram."; missing.focus(); return; }
+          err.textContent = "";
+          window.open("https://t.me/flast_aibot?start=zayavka", "_blank");
+          stepForm.hidden = true; stepDone.hidden = false;
+          dlg.setAttribute("aria-labelledby", "done-title");
+          form.reset();
+          document.getElementById("done-title").focus();
+        });
+      })();
+    </script>
+  </body>
+</html>
