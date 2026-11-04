@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Flast — твой ИИ-компаньон · flastai.com</title>
+    <title>Flast — твой ИИ-компаньон</title>
     <meta name="description" content="Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -161,7 +161,7 @@
             <h1 class="x-h1" id="hero-title"><span>Твой ИИ-компаньон</span><span>уже <em class="x-key" style="font-style:normal">здесь</em></span></h1>
             <p class="x-lead">Flast — набор текстовых нейросетей, которые пишут, отвечают, переводят и программируют за тебя.</p>
             <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
-            <p class="x-mono">[ flastai.com ]</p>
+            <p class="x-mono">[ flastai.github.io ]</p>
           </section>
 
           <section class="x-sec" id="umeet" aria-labelledby="umeet-title">
@@ -226,7 +226,7 @@
           </section>
 
           <section class="x-cta" aria-labelledby="cta-title">
-            <p class="x-mono">[ flastai.com ]</p>
+            <p class="x-mono">[ flastai.github.io ]</p>
             <h2 class="x-big" id="cta-title">Попробуй Flast</h2>
             <button class="x-btn" type="button" data-apply aria-haspopup="dialog">Начать <span aria-hidden="true">→</span></button>
           </section>
@@ -237,8 +237,8 @@
             <span class="x-tile"><i></i></span>
             <span class="x-word"><b>Flast</b></span>
           </a>
-          <a class="x-mail" href="mailto:hey@flastai.com">[ HEY@FLASTAI.COM ]</a>
-          <p>flastai.com · 2026</p>
+          <p class="x-mail">[ FLASTAI.GITHUB.IO ]</p>
+          <p>Flast · 2026</p>
         </footer>
       </div>
     </div>
@@ -262,9 +262,9 @@
         <div class="x-step-done" hidden>
           <div class="x-modal__in" style="padding:0">
             <h2 id="done-title" tabindex="-1">Заявка отправлена ✓</h2>
-            <p>Открой Telegram и нажми СТАРТ, чтобы завершить. После одобрения доступ откроется.</p>
+            <p>Открой Telegram, нажми СТАРТ и «Отправить». Как только заявку одобрят, бот напишет тебе.</p>
             <div class="x-done">
-              <a class="x-btn" href="https://t.me/flast_aibot" target="_blank" rel="noopener">Открыть Telegram</a>
+              <a class="x-btn" id="tg-link" href="https://t.me/flastai_requests_bot" target="_blank" rel="noopener">Открыть Telegram</a>
               <button class="x-textbtn" type="button" data-close>Закрыть</button>
             </div>
           </div>
@@ -314,7 +314,14 @@
           });
           if (missing) { err.textContent = "Заполни имя и @ник в Telegram."; missing.focus(); return; }
           err.textContent = "";
-          window.open("https://t.me/flast_aibot?start=zayavka", "_blank");
+          var raw = form.elements.name.value.trim() + "\n" + form.elements.comment.value.trim();
+          var by = new TextEncoder().encode(raw);
+          if (by.length > 48) { by = by.slice(0, 48); while (by.length && (by[by.length - 1] & 0xC0) === 0x80) by = by.slice(0, -1); if (by.length && by[by.length - 1] >= 0xC0) by = by.slice(0, -1); }
+          var bin = ""; by.forEach(function (c) { bin += String.fromCharCode(c); });
+          var pl = btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+          var url = "https://t.me/flastai_requests_bot?start=" + pl;
+          document.getElementById("tg-link").href = url;
+          window.open(url, "_blank");
           stepForm.hidden = true; stepDone.hidden = false;
           dlg.setAttribute("aria-labelledby", "done-title");
           form.reset();
